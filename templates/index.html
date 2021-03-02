@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Data</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: rgb(248, 207, 248);
+    }
+
+    div {
+        margin: auto;
+        margin-top: 2rem;
+        width: 90vw;
+        min-height: 80vh;
+        box-shadow: 0 0 20px 0 black;
+        padding: 5px;
+        border-radius: 10px;
+    }
+
+    select {
+        width: 100%;
+        font-size: larger;
+        background: rgb(70, 33, 70);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+    }
+
+    [for='file'] {
+        background: rgb(70, 33, 70);
+        color: #fff;
+        padding: 5px;
+        display: block;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    option {
+        background: rgb(126, 68, 126);
+    }
+
+    textarea {
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        width: 100%;
+        margin: 10px 0;
+        resize: none;
+    }
+
+    button {
+        padding: 3px 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        background: purple;
+        color: #fff;
+    }
+
+
+    [nodisplay] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div>
+        <form action="/send" method='post' enctype="multipart/form-data">
+            {%csrf_token%}
+            <select onchange="selectInput(this);">
+                <option value="text">Text</option>
+                <option value="file">File</option>
+            </select>
+            <textarea required name="text" id="" cols="30" rows="10" nodisplay></textarea>
+            <input required type="file" name='file' id='file' nodisplay onchange='updateFileName();'>
+            <label for="file">Select a file</label>
+            <center>
+                <button type="submit">Submit</button>
+            </center>
+        </form>
+    </div>
+</body>
+<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+
+<script>
+    selectInput = () => {
+        if (document.querySelector('select').value == 'text') {
+            document.querySelector('textarea').style.display = 'block';
+            document.querySelector('[for=file]').style.display = 'none';
+            document.querySelector('[type=file]').setAttribute('disabled',true);
+            document.querySelector('textarea').removeAttribute('disabled');
+        }
+        else if (document.querySelector('select').value == 'file') {
+            document.querySelector('[for=file]').style.display = 'block';
+            document.querySelector('textarea').style.display = 'none';
+            document.querySelector('[type=file]').removeAttribute('disabled');
+            document.querySelector('textarea').setAttribute('disabled',true);
+        }
+    }
+    function updateFileName() {
+        document.querySelector('[for=file]').innerText = document.querySelector('[type=file]').value.slice(12);
+    }
+    selectInput();
+
+</script>
+
+</html>

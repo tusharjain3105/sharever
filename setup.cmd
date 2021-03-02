@@ -1,0 +1,1 @@
+python -m pip install qrcode pillow django
